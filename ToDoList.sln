@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Web", "src\ToDoLis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Core", "src\ToDoList.Core\ToDoList.Core.csproj", "{710F0A75-E1AE-4EDA-A2B5-B8466C32A1FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Infrastructure", "src\ToDoList.Infrastructure\ToDoList.Infrastructure.csproj", "{87CDA0B1-A3D4-49D0-9C8E-40347EBEDB56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{710F0A75-E1AE-4EDA-A2B5-B8466C32A1FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{710F0A75-E1AE-4EDA-A2B5-B8466C32A1FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{710F0A75-E1AE-4EDA-A2B5-B8466C32A1FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87CDA0B1-A3D4-49D0-9C8E-40347EBEDB56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87CDA0B1-A3D4-49D0-9C8E-40347EBEDB56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87CDA0B1-A3D4-49D0-9C8E-40347EBEDB56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87CDA0B1-A3D4-49D0-9C8E-40347EBEDB56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
