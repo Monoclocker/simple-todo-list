@@ -1,0 +1,13 @@
+@using ToDoList.Web.Controllers
+<header>
+    <section id="logo">
+        <div>TODO List</div>
+    </section>
+    <section id="profile">
+        @if (User.Identity?.IsAuthenticated is true)
+        {
+            <div class="username">@User.Identity.Name</div>
+            <div class="sign-out">@Html.ActionLink("Выйти", nameof(HomeController.Logout), "Home")</div>
+        }
+    </section>
+</header>

@@ -1,31 +1,26 @@
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Web.Models;
 
 namespace ToDoList.Web.Controllers;
 
-public class HomeController : Controller
+public sealed class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
-        return View();
+        if (User.Identity?.IsAuthenticated is true)
+        {
+            return View();
+        } 
+        
+        return Challenge(new AuthenticationProperties { RedirectUri = "/" });
     }
 
-    public IActionResult Privacy()
+    public IActionResult Logout(string redirectUrl = "/")
     {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return SignOut(new AuthenticationProperties { RedirectUri = redirectUrl },
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            OpenIdConnectDefaults.AuthenticationScheme);
     }
 }
