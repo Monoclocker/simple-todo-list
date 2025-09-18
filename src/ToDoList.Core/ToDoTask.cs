@@ -4,28 +4,28 @@ public sealed class ToDoTask
 {
     public Guid Id { get; private set; }
     
-    public string Task { get; private set; }
+    public string Title { get; private set; }
     
     public string Description { get; private set; }
     
-    public Guid UserId { get; private set; }
+    public string Username { get; private set; }
     
     public DateTime CreationDate { get; }
     
-    public DateTime ValidUntil { get; private set; }
+    public DateTime? ValidUntil { get; private set; }
     
     public bool IsCompleted { get; private set; }
 
     private ToDoTask(
-        string task,
+        string title,
         string description,
         DateTime creationDate,
         DateTime validUntil,
-        Guid userId)
+        string username)
     {
         Id = Guid.CreateVersion7();
-        UserId = userId;
-        Task = task;
+        Username = username;
+        Title = title;
         Description = description;
         CreationDate = creationDate;
         ValidUntil = validUntil;
@@ -33,19 +33,19 @@ public sealed class ToDoTask
 
     public ToDoTask(
         Guid id,
-        string task,
+        string title,
         string description,
         DateTime creationDate,
-        DateTime validUntil,
-        Guid userId,
+        DateTime? validUntil,
+        string username,
         bool isCompleted)
     {
         Id = id;
-        Task = task;
+        Title = title;
         Description = description;
         CreationDate = creationDate;
         ValidUntil = validUntil;
-        UserId = userId;
+        Username = username;
         IsCompleted = isCompleted;
     }
 
@@ -79,12 +79,12 @@ public sealed class ToDoTask
     
     public void UpdateTask(string newTask)
     {
-        Task = newTask;
+        Title = newTask;
     }
 
     public void UpdateDescription(string newDescription)
     {
-        Task = newDescription;
+        Title = newDescription;
     }
 
     public static ToDoTaskResult CreateNew(
@@ -92,7 +92,7 @@ public sealed class ToDoTask
         string description,
         DateTime creationDate,
         DateTime validUntil,
-        Guid userId,
+        string username,
         out ToDoTask? createdTask)
     {
         createdTask = null;
@@ -105,7 +105,7 @@ public sealed class ToDoTask
             description,
             creationDate,
             validUntil,
-            userId);
+            username);
         
         return ToDoTaskResult.Success();
     }

@@ -8,23 +8,56 @@ internal sealed class MongoToDoTasksDao(IMongoClient client) : IToDoTasksDao
     private readonly IMongoCollection<ToDoTask> _collection = client
         .GetDatabase("ToDoList")
         .GetCollection<ToDoTask>(nameof(ToDoTask));
-    
-    public async Task<IEnumerable<ToDoTask>> GetAllByUserAsync(Guid userId)
-    { 
-        List<ToDoTask> tasks = await _collection
-            .Find(x => x.UserId == userId)
-            .ToListAsync();
+
+    public async Task<IEnumerable<ToDoTask>> GetValidUserTasks(string username, DateTime currentDate)
+    {
+        FilterDefinition<ToDoTask> usernameEqualityFilter = Builders<ToDoTask>
+            .Filter
+            .Eq(x => x.Username, username);
         
-        return tasks;
+        FilterDefinition<ToDoTask> dateFilter = Builders<ToDoTask>
+            .Filter
+            .Gte(x => x.ValidUntil, currentDate);
+        
+        var queryFilter = dateFilter & usernameEqualityFilter;
+
+        var tasks = await _collection.FindAsync(queryFilter);
+
+        return await tasks.ToListAsync();
     }
 
-    public async Task<ToDoTask?> GetByIdAsync(Guid id)
+    public async Task<IEnumerable<ToDoTask>> GetExpiredUserTasks(string username, DateTime currentDate)
     {
-        ToDoTask? element = await _collection
-            .Find(x => x.Id == id)
-            .FirstOrDefaultAsync();
+        FilterDefinition<ToDoTask> usernameEqualityFilter = Builders<ToDoTask>
+            .Filter
+            .Eq(x => x.Username, username);
+        
+        FilterDefinition<ToDoTask> dateFilter = Builders<ToDoTask>
+            .Filter
+            .Lte(x => x.ValidUntil, currentDate);
+        
+        var queryFilter = dateFilter & usernameEqualityFilter;
 
-        return element;
+        var tasks = await _collection.FindAsync(queryFilter);
+
+        return await tasks.ToListAsync();
+    }
+
+    public async Task<IEnumerable<ToDoTask>> GetCompletedUserTasks(string username)
+    {
+        FilterDefinition<ToDoTask> usernameEqualityFilter = Builders<ToDoTask>
+            .Filter
+            .Eq(x => x.Username, username);
+
+        FilterDefinition<ToDoTask> completionFilter = Builders<ToDoTask>
+            .Filter
+            .Eq(x => x.IsCompleted, true);
+        
+        var queryFilter = completionFilter & usernameEqualityFilter;
+
+        var tasks = await _collection.FindAsync(queryFilter);
+
+        return await tasks.ToListAsync();
     }
 
     public Task CreateTaskAsync(ToDoTask task)
@@ -42,7 +75,7 @@ internal sealed class MongoToDoTasksDao(IMongoClient client) : IToDoTasksDao
             .Update
             .Set(x => x.IsCompleted, task.IsCompleted)
             .Set(x => x.ValidUntil, task.ValidUntil)
-            .Set(x => x.Task, task.Task)
+            .Set(x => x.Title, task.Title)
             .Set(x => x.Description, task.Description);
 
         return _collection.UpdateOneAsync(filter, updateDefinition);

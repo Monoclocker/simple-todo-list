@@ -5,12 +5,18 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/styles.css" rel="stylesheet"/>
-        <script src="~/lib/htmx/htmx.min.js"></script>
+        
     </head>
-    <body>
-        @{
-            await Html.RenderPartialAsync("Header");
-        }
-        @RenderBody()
-    </body>
+<body>
+<header>
+    @{
+        await Html.RenderPartialAsync("Header");
+    }
+</header>
+<main>
+    @RenderBody()
+</main>
+
+<script src="lib/htmx/htmx.min.js"></script>
+</body>
 </html>
