@@ -2,6 +2,9 @@ namespace ToDoList.Core;
 
 public sealed class ToDoTask
 {
+    private static readonly TimeSpan TimeBeforeExpirationToStartNotification 
+        = TimeSpan.FromDays(7);
+    
     public Guid Id { get; private set; }
     
     public string Title { get; private set; }
@@ -15,7 +18,9 @@ public sealed class ToDoTask
     public DateTime? ValidUntil { get; private set; }
     
     public bool IsCompleted { get; private set; }
-
+    
+    
+    
     private ToDoTask(
         string title,
         string description,
@@ -85,6 +90,13 @@ public sealed class ToDoTask
     public void UpdateDescription(string newDescription)
     {
         Title = newDescription;
+    }
+
+    public bool IsAboutToExpire(DateTime currentDateTime)
+    {
+        return ValidUntil.HasValue 
+               && currentDateTime.Subtract(ValidUntil.Value) 
+                <= TimeBeforeExpirationToStartNotification;
     }
 
     public static ToDoTaskResult CreateNew(

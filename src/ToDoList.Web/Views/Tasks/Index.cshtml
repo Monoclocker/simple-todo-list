@@ -1,2 +1,12 @@
 @model ToDoList.Web.Models.UserTasksModel
 
+<section id="tasks">
+    <div id="tabs">
+        <div hx-get="/tasks/valid" hx-trigger="click" hx-target="#tasks-container">Активные</div>
+        <div hx-get="/tasks/expired" hx-trigger="click" hx-target="#tasks-container">Истекшие</div>
+        <div hx-get="/tasks/completed" hx-trigger="click" hx-target="#tasks-container">Выполненные</div>
+    </div>
+</section>
+
+<section id="shown-tasks" hx-get="/tasks/valid" hx-trigger="load"></section>
+

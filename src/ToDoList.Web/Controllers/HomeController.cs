@@ -11,7 +11,7 @@ public sealed class HomeController : Controller
     {
         if (User.Identity?.IsAuthenticated is true)
         {
-            return View();
+            return RedirectToAction("Index", "Tasks");
         } 
         
         return Challenge(new AuthenticationProperties { RedirectUri = "/" });

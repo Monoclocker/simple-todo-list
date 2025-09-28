@@ -18,15 +18,23 @@ public sealed class TasksController(IToDoTasksDao tasksDao, ITimeProvider timePr
     [Authorize]
     public async Task<IActionResult> Valid()
     {
-        return View();
+        DateTime currentTime = timeProvider.Now;
+        
+        string username = User.Identity?.Name ?? throw new ArgumentException("Username is required.");
+        
+        var tasks = await tasksDao.GetValidUserTasks(username, currentTime);
+        
+        return PartialView("_ValidTasks", tasks.Select(x => MapValid(x, currentTime)));
     }
 
-    private TaskModel Map(ToDoTask task)
+    private static ValidTaskModel MapValid(ToDoTask task, DateTime currentTime)
     {
-        return new TaskModel(
+        return new ValidTaskModel(
             task.Id,
             task.Title,
             task.Description,
-            task.ValidUntil);
+            task.CreationDate,
+            task.ValidUntil,
+            task.IsAboutToExpire(currentTime));
     }
 }

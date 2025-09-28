@@ -35,12 +35,40 @@
     </ItemGroup>
     
     <ItemGroup>
-        
+        <ProjectReference Include="..\ToDoList.Infrastructure\ToDoList.Infrastructure.csproj" />
+        <ProjectReference Include="..\ToDoList.Core\ToDoList.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ToDoList.Infrastructure\ToDoList.Infrastructure.csproj" />
-        <ProjectReference Include="..\ToDoList.Core\ToDoList.Core.csproj" />
+      <UpToDateCheckInput Remove="Views\Home\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\TasksPanelView.ru-RU.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>TasksPanelView.ru-RU.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\TasksPanelView.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>TasksPanelView.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\TasksPanelView.ru-RU.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TasksPanelView.ru-RU.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\TasksPanelView.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TasksPanelView.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\TasksPanel\" />
     </ItemGroup>
 
 </Project>

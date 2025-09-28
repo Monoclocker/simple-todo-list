@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<ValidTaskModel>
+@inject IViewLocalizer Localizer
+
+<form hx-post="/tasks/createTask" hx-target="#tasks-container" hx-swap="afterbegin">
+    <input type="text" name="Title"/>
+    <input type="text" name="Description"/>
+    <input type="datetime" name="time"/>
+    <button type="submit">@Localizer["Create task"]</button>
+</form>
+
+<div id="tasks-container">
+    
+    @if (!Model.Any())
+    {
+        <span>@Localizer["Tasks not planed"]</span>
+    }
+    else
+    {
+        @foreach (ValidTaskModel task in Model)
+        {
+            <div class="task-card">
+                <h5>@task.Title</h5>
+                @if (task.IsAboutToExpire)
+                {
+                    <span class="expiration-message">@Localizer["Task is about to expire"]</span>
+                }
+                <span>Дата создания: {@task.CreationTime}</span>
+                @if (task.ValidUntil.HasValue)
+                {
+                    <span>@task.ValidUntil.Value</span>
+                }
+                <p>@task.Description</p>
+                <button hx-delete="/tasks/delete/@task.Id">@Localizer["Delete task"]</button>
+                
+            </div>
+        }
+    }
+    
+</div>
